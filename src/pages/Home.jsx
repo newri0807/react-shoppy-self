@@ -69,7 +69,7 @@ export default function home() {
 }
 
 const bringImg = (imgName, i) => {
-  // storage 이미지 불러오기
+  // storage 이미지 불러오기!
   const storage = getStorage();
   // Create a reference under which you want to list
   const storageRef = ref2(storage, `product/${imgName}`);
