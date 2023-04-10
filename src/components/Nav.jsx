@@ -1,13 +1,12 @@
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { cartContext } from "../context/cart-context";
-import { auth, getCart } from "../firebase";
+import { auth, getCart, handleGoogleLogin } from "../api/firebase";
 
 export default function Nav(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { totalCartAmount, setTotalCartAmount, addTototalCartAmount } =
-    useContext(cartContext);
+  const { totalCartAmount, addTototalCartAmount } = useContext(cartContext);
 
   const localStorageYn = JSON.parse(localStorage.getItem("userInfo"));
   const [userData, setUserData] = useState(localStorageYn);
@@ -16,22 +15,30 @@ export default function Nav(props) {
   // 페이지 이동
   const Navigate = useNavigate();
 
-  function handleGoogleLogin() {
-    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
-    signInWithPopup(auth, provider) // popup을 이용한 signup
-      .then((data) => {
-        localStorage.setItem("userInfo", JSON.stringify(data.user)); // user data 설정
-        setUserData(JSON.parse(localStorage.getItem("userInfo")));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // function handleGoogleLogin() {
+  //   const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+  //   signInWithPopup(auth, provider) // popup을 이용한 signup
+  //     .then((data) => {
+  //       localStorage.setItem("userInfo", JSON.stringify(data.user)); // user data 설정
+  //       setUserData(JSON.parse(localStorage.getItem("userInfo")));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+
+  const handleLogin = () => {
+    handleGoogleLogin().then((res) => {
+      localStorage.setItem("userInfo", JSON.stringify(res));
+      setUserData(localStorageYn);
+    });
+  };
 
   useEffect(() => {
-    if (userData !== null) {
+    if (userData !== undefined) {
+      console.log(userData.uid);
       getCart(userData.uid).then((res) => {
-        //console.log(res.length);
+        console.log(res);
         addTototalCartAmount(res.length);
       });
     }
@@ -99,7 +106,7 @@ export default function Nav(props) {
             <span>{userData.displayName}</span>
           </li>
         ) : (
-          <li onClick={handleGoogleLogin} className="cursor-pointer">
+          <li onClick={handleLogin} className="cursor-pointer">
             login
           </li>
         )}

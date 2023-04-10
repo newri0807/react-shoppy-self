@@ -1,6 +1,6 @@
 import { Database, get, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { addOrUpdateToCart, removeFromCart } from "../firebase";
+import { addOrUpdateToCart, removeFromCart } from "../api/firebase";
 
 export default function CartCount(props) {
   const loginUser = JSON.parse(localStorage.getItem("userInfo"));

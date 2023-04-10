@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getCart } from "../firebase";
+import { getCart } from "../api/firebase";
 
 export const cartContext = createContext();
 
@@ -8,7 +8,7 @@ export function CartProvider({ children }) {
   const addTototalCartAmount = (item) => setTotalCartAmount(item);
   const loginUserId = JSON.parse(localStorage.getItem("userInfo"));
   useEffect(() => {
-    if (loginUserId === null) {
+    if (loginUserId === null || loginUserId === undefined) {
       setTotalCartAmount(0);
     } else {
       getCart(loginUserId.uid).then((res) => {

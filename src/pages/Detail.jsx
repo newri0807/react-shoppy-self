@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDatabase, set, ref, get, child, push } from "firebase/database";
 import { getDownloadURL, getStorage, ref as ref2 } from "firebase/storage";
-import { addOrUpdateToCart, getCart } from "../firebase";
+import { addOrUpdateToCart, getCart } from "../api/firebase";
 import { cartContext } from "../context/cart-context";
 
 export default function Detail() {
@@ -98,13 +98,15 @@ export default function Detail() {
         console.log(find2, selected);
         if (find2 === undefined) {
           console.log("같은 상품&& 옵션 다른 ----- 데이터 추가");
-          appData.map((prev) => {
-            return (nowCarts = {
-              ...prev,
-              itemOption: selected,
-              itemCount: 1,
+          appData
+            .filter((data) => data.itemId === id)
+            .map((prev) => {
+              return (nowCarts = {
+                ...prev,
+                itemOption: selected,
+                itemCount: 1,
+              });
             });
-          });
         } else {
           console.log("같은 상품 && 같은 옵션 추가중 ---- 수량만 +1");
           appData
