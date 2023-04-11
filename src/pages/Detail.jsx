@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useContext, useState } from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDatabase, ref, get, child } from "firebase/database";
 import { addOrUpdateToCart, getCart } from "../api/firebase";
