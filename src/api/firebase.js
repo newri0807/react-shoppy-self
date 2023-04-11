@@ -1,21 +1,20 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { get, getDatabase, ref, remove, set } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
+import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBrfoBPS44DjFzUTYv9OE9U-pG1Yl0cJ9g",
-  authDomain: "react-shoppy-3b5bd.firebaseapp.com",
-  databaseURL:
-    "https://react-shoppy-3b5bd-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "react-shoppy-3b5bd",
-  storageBucket: "react-shoppy-3b5bd.appspot.com",
-  messagingSenderId: "695819232826",
-  appId: "1:695819232826:web:610f5267caecfc903d7703",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
@@ -24,6 +23,20 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const database = getDatabase();
 export { app, auth, db };
+
+export async function handleGoogleLogin() {
+  const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+  return signInWithPopup(auth, provider) // popup을 이용한 signup
+    .then((data) => {
+      console.log("extra", data.user);
+      // localStorage.setItem("userInfo", JSON.stringify(data.user)); // user data 설정
+      // return JSON.parse(localStorage.getItem("userInfo"));
+      return data.user;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
 
 export async function getCart(userId) {
   return get(ref(database, `carts/${userId}`)) //사용자id별로 carts를 보관

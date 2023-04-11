@@ -11,16 +11,17 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Detail from "./pages/Detail";
 import Cart from "./pages/Cart";
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <App />,
     errorElement: <div>Error Page 😭</div>,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, path: "/", element: <Home /> },
       {
         path: "/product",
         element: <Product />,

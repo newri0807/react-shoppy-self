@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { cartContext } from "../context/cart-context";
-import { addOrUpdateToCart, getCart, removeFromCart } from "../firebase";
+import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
 
 export default function Cart() {
   const { addTototalCartAmount } = useContext(cartContext);
