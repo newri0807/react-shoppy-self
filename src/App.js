@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import logo from "./logo.svg";
-=======
->>>>>>> reset2
 import "./App.css";
 import { CartProvider } from "./context/cart-context";
 import Nav from "./components/Nav";

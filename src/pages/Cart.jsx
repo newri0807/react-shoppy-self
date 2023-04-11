@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useContext } from "react";
-=======
 import React, { useContext, useEffect, useState } from "react";
->>>>>>> reset2
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { cartContext } from "../context/cart-context";
 import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
@@ -10,16 +6,10 @@ import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
 export default function Cart() {
   const { addTototalCartAmount } = useContext(cartContext);
   const loginUser = JSON.parse(localStorage.getItem("userInfo"));
-<<<<<<< HEAD
-  //const [datass, setDatass] = useState();
-
-  const QueryClient = useQueryClient();
-=======
   const [totalPrice, setTotalPrice] = useState(0);
 
   const QueryClient = useQueryClient();
-  
->>>>>>> reset2
+
   const mutation = useMutation(() => getCart(loginUser.uid), {
     onSuccess: () => QueryClient.invalidateQueries(["carts"]),
   });
@@ -32,20 +22,17 @@ export default function Cart() {
     }
   );
 
-<<<<<<< HEAD
-=======
-
   useEffect(() => {
     const htmlTag = document.querySelectorAll(".each_price");
     let totalPrices = 0;
     for (var i = 0; i < htmlTag.length; i++) {
-      totalPrices += Number(htmlTag[i].innerHTML.split("원")[0].replace(/,/g, ""));
+      totalPrices += Number(
+        htmlTag[i].innerHTML.split("원")[0].replace(/,/g, "")
+      );
     }
     setTotalPrice(totalPrices);
   }, [data]);
 
-
->>>>>>> reset2
   if (status === "loading") {
     return <span>Loading...</span>;
   }
@@ -54,10 +41,6 @@ export default function Cart() {
     return <span>Error: {error.message}</span>;
   }
 
-<<<<<<< HEAD
-  console.log(data, data.length);
-=======
->>>>>>> reset2
   const reducer = (action, prev) => {
     let changeData = {};
     if (action === "add-count") {
@@ -106,10 +89,6 @@ export default function Cart() {
     addOrUpdateToCart(loginUser.uid, changeData);
   };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> reset2
   return (
     <div>
       {data.length === 0 && (
@@ -128,11 +107,7 @@ export default function Cart() {
                     <img
                       src={item.itemImgUrl}
                       alt=""
-<<<<<<< HEAD
-                      className={`product_${index}`}
-=======
                       className={`product_${index} max-h-[300px]`}
->>>>>>> reset2
                     />
                   </span>
                   <span className="min-w-[150px]">{item.itemName} </span>
@@ -158,13 +133,12 @@ export default function Cart() {
                       -
                     </button>
                   </div>
-<<<<<<< HEAD
-
-=======
                   <span className={`min-w-[150px] each_price`}>
-                    {`${Number(item.itemPrice * item.itemCount).toLocaleString('ko-KR')}`}원
+                    {`${Number(item.itemPrice * item.itemCount).toLocaleString(
+                      "ko-KR"
+                    )}`}
+                    원
                   </span>
->>>>>>> reset2
                   <button
                     className="bg-gray-800 hover:bg-gray-800 text-white font-bold
                 px-2 py-1  min-w-[27px] "
@@ -186,25 +160,34 @@ export default function Cart() {
                 </li>
               );
             })}
-<<<<<<< HEAD
-=======
-            <table className="table-fixed w-full my-14 border text-center  font-light dark:border-neutral-500">
-              <thead className="border-b font-medium dark:border-neutral-500" >
-                <tr className='border-separate border-neutral-700 bg-neutral-800 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700'>
-                  <th  className="border-r px-6 py-4 dark:border-neutral-500">총 상품금액</th>
-                  <th  className="border-r px-6 py-4 dark:border-neutral-500">총 배송비</th>
-                  <th  className="border-r px-6 py-4 dark:border-neutral-500">결제예정금액</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='border-b dark:border-neutral-500'>
-                  <td  className="border-r px-6 py-4 dark:border-neutral-500 text-xl ">{`${Number(totalPrice).toLocaleString('ko-KR')}`}원</td>
-                  <td  className="border-r px-6 py-4 dark:border-neutral-500 text-xl ">{`${Number(3000).toLocaleString('ko-KR')}`}원</td>
-                  <td  className="border-r px-6 py-4 dark:border-neutral-500 text-xl font-bold  text-[#EC4899]">{`= ${Number(totalPrice).toLocaleString('ko-KR')}`}원</td>
-                </tr>                
-              </tbody>
-            </table>
->>>>>>> reset2
+          <table className="table-fixed w-full my-14 border text-center  font-light dark:border-neutral-500">
+            <thead className="border-b font-medium dark:border-neutral-500">
+              <tr className="border-separate border-neutral-700 bg-neutral-800 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+                <th className="border-r px-6 py-4 dark:border-neutral-500">
+                  총 상품금액
+                </th>
+                <th className="border-r px-6 py-4 dark:border-neutral-500">
+                  총 배송비
+                </th>
+                <th className="border-r px-6 py-4 dark:border-neutral-500">
+                  결제예정금액
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b dark:border-neutral-500">
+                <td className="border-r px-6 py-4 dark:border-neutral-500 text-xl ">
+                  {`${Number(totalPrice).toLocaleString("ko-KR")}`}원
+                </td>
+                <td className="border-r px-6 py-4 dark:border-neutral-500 text-xl ">
+                  {`${Number(3000).toLocaleString("ko-KR")}`}원
+                </td>
+                <td className="border-r px-6 py-4 dark:border-neutral-500 text-xl font-bold  text-[#EC4899]">
+                  {`= ${Number(totalPrice).toLocaleString("ko-KR")}`}원
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </ul>
       )}
     </div>

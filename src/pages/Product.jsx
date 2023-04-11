@@ -1,12 +1,7 @@
 import React from "react";
-<<<<<<< HEAD
-
-export default function Product() {
-  return <div>Product</div>;
-=======
 import { getDatabase, ref, child, get, orderByChild } from "firebase/database";
 import { useQuery } from "react-query";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function Product() {
   const dbRef = ref(getDatabase());
@@ -15,10 +10,17 @@ export default function Product() {
       if (snapshot.exists()) {
         //console.log(snapshot.val());
         const data = Object.values(snapshot.val()); //배열화
-         // 금액 높은 순으로 정렬
-        const sortedData = data && data.map(item => {
-        return { ...item, itemPrice: parseInt(item.itemPrice.replace(',', '')) };
-        }).sort((a, b) => b.itemPrice - a.itemPrice);
+        // 금액 높은 순으로 정렬
+        const sortedData =
+          data &&
+          data
+            .map((item) => {
+              return {
+                ...item,
+                itemPrice: parseInt(item.itemPrice.replace(",", "")),
+              };
+            })
+            .sort((a, b) => b.itemPrice - a.itemPrice);
         return sortedData;
       } else {
         console.log("No data available");
@@ -28,8 +30,8 @@ export default function Product() {
       console.error(error);
     });
 
- const Navigate = useNavigate();
-    
+  const Navigate = useNavigate();
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { status, data, error } = useQuery(
     ["products"],
@@ -61,17 +63,23 @@ export default function Product() {
                 Navigate(`/detail/${item.index}`);
               }}
             >
-              <img className={`products_${i}`} src={item.itemImgUrl} alt={`products_${i}`}/>
-              <h3 className='text-lg mt-4 mb-2 font-semibold'> {item.itemName}</h3>
-              <h5 className='mb-[10px]'>   
-              {isNaN(item.itemPrice)
+              <img
+                className={`products_${i}`}
+                src={item.itemImgUrl}
+                alt={`products_${i}`}
+              />
+              <h3 className="text-lg mt-4 mb-2 font-semibold">
+                {" "}
+                {item.itemName}
+              </h3>
+              <h5 className="mb-[10px]">
+                {isNaN(item.itemPrice)
                   ? item.itemPrice
-                  : `${Number(item.itemPrice).toLocaleString('ko-KR')}원`}
+                  : `${Number(item.itemPrice).toLocaleString("ko-KR")}원`}
               </h5>
             </li>
           );
         })}
     </ul>
   );
->>>>>>> reset2
 }

@@ -2,18 +2,11 @@ import React, { useState } from "react";
 import { getDatabase, set, ref } from "firebase/database";
 import {
   getStorage,
-<<<<<<< HEAD
-  uploadString,
-=======
->>>>>>> reset2
   getDownloadURL,
   ref as ref2,
   uploadBytesResumable,
 } from "firebase/storage";
-<<<<<<< HEAD
-=======
-import {HiUpload} from 'react-icons/hi';
->>>>>>> reset2
+import { HiUpload } from "react-icons/hi";
 
 export default function AddProduct() {
   const [values, setValues] = useState({
@@ -34,31 +27,21 @@ export default function AddProduct() {
       console.log(files[0]);
       return;
     }
-<<<<<<< HEAD
-=======
     if (name === "itemPrice") {
-    const formattedValue = Number(value.replace(/,/g, '')).toLocaleString();
-    setValues({
-      ...values,
-      [name]: formattedValue,
-    });
-    return;
-  }
->>>>>>> reset2
+      const formattedValue = Number(value.replace(/,/g, "")).toLocaleString();
+      setValues({
+        ...values,
+        [name]: formattedValue,
+      });
+      return;
+    }
     setValues({
       ...values,
       [name]: value,
     });
   };
 
-<<<<<<< HEAD
   //이미지 업로드 관련
-
-=======
-  
-
-  //이미지 업로드 관련
->>>>>>> reset2
   const randomId = Math.random().toString(16).substring(2, 8);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,15 +105,20 @@ export default function AddProduct() {
   };
 
   return (
-<<<<<<< HEAD
-    <div>
-      {file && <img src={URL.createObjectURL(file)} alt="local file img" />}
-      <form onSubmit={handleSubmit}>
-=======
-    <div className=' flex justify-center flex-wrap'>
-      {file && <div className="flex w-full h-[400px] justify-center"><img src={URL.createObjectURL(file)} alt="local file img" className='w-[300px]  mt-[20px] mb-[30px] my-auto' /></div> }
-      <form onSubmit={handleSubmit} className={`w-[500px] m-auto  ${ file ? ('mt-[0px]'):('mt-[400px]')}`}>
->>>>>>> reset2
+    <div className=" flex justify-center flex-wrap">
+      {file && (
+        <div className="flex w-full h-[400px] justify-center">
+          <img
+            src={URL.createObjectURL(file)}
+            alt="local file img"
+            className="w-[300px]  mt-[20px] mb-[30px] my-auto"
+          />
+        </div>
+      )}
+      <form
+        onSubmit={handleSubmit}
+        className={`w-[500px] m-auto  ${file ? "mt-[0px]" : "mt-[400px]"}`}
+      >
         <input
           type="file"
           className="border-2 rounded text-gray-500 p-1 my-2 w-full"
@@ -152,11 +140,7 @@ export default function AddProduct() {
           type="text"
           placeholder="가격"
           className="border-2 rounded text-gray-500 p-1 my-2 w-full"
-<<<<<<< HEAD
           name="itemPrice"
-=======
-          name="itemPrice"          
->>>>>>> reset2
           value={values.itemPrice}
           onChange={handleChange}
         />
@@ -186,16 +170,10 @@ export default function AddProduct() {
         />
         <button
           type="submit"
-<<<<<<< HEAD
-          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
-        >
-          submit
-=======
           className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded mt-8 mx-auto flex justify-center items-center gap-2"
         >
-          <HiUpload/>
+          <HiUpload />
           상품 등록
->>>>>>> reset2
         </button>
       </form>
     </div>

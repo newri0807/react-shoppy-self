@@ -1,22 +1,11 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-<<<<<<< HEAD
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
-import { getDatabase, set, ref, get, child, push } from "firebase/database";
-import { getDownloadURL, getStorage, ref as ref2 } from "firebase/storage";
+import { useParams } from "react-router-dom";
+import { getDatabase, ref, get, child } from "firebase/database";
 import { addOrUpdateToCart, getCart } from "../api/firebase";
 import { cartContext } from "../context/cart-context";
-=======
-import React, { useContext,  useState } from "react";
-import { useQuery } from "react-query";
-import {  useParams } from "react-router-dom";
-import { getDatabase,  ref, get, child,  } from "firebase/database";
-import { addOrUpdateToCart, getCart } from "../api/firebase";
-import { cartContext } from "../context/cart-context";
-import { AiOutlineShoppingCart } from 'react-icons/ai';
-
->>>>>>> reset2
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 export default function Detail() {
   const { addTototalCartAmount } = useContext(cartContext);
@@ -64,12 +53,16 @@ export default function Detail() {
     return <span>Error: {error.message}</span>;
   }
 
-<<<<<<< HEAD
-  const { itemImg, itemName, itemPrice, itemOption, itemImgUrl } = data;
-=======
-  const { itemImg, itemName, itemPrice, itemOption, itemImgUrl, itemCate, itemDesc } = data;
-  console.log(data)
->>>>>>> reset2
+  const {
+    itemImg,
+    itemName,
+    itemPrice,
+    itemOption,
+    itemImgUrl,
+    itemCate,
+    itemDesc,
+  } = data;
+  console.log(data);
 
   const handleSelect = (e) => {
     setSelected(e.target.value);
@@ -153,61 +146,46 @@ export default function Detail() {
 
   return (
     <form onSubmit={addCart}>
-<<<<<<< HEAD
-      <img alt={`${itemImg} 이미지`} src={itemImgUrl} />
-      <h3> {itemName}</h3>
-      <h5>{itemPrice}원</h5>
-      <select
-        onChange={handleSelect}
-        className="border-2 rounded text-gray-500 p-1 my-2 w-sm block selectBox"
-        defaultValue={selectList[0]}
-      >
-        {selectList.map((item, index) => {
-          return (
-            <option key={index} value={item}>
-              {item}
-            </option>
-          );
-        })}
-      </select>
-      <button
-        className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
-        type="submit"
-      >
-        장바구니에 넣기
-      </button>
-=======
       <div className="flex  justify-around">
-          <img className='w-1/2' alt={`${itemImg} 이미지`} src={itemImgUrl} />
-          <div className='w-1/2 px-[50px] py-[20px]'>
-              <h3 className='text-2xl text-left mb-3'>{itemName}</h3>
-              <h5 className='text-2xl text-left text-[#E05879] font-extrabold mb-5'>{`${Number(itemPrice).toLocaleString('ko-KR')}`}원</h5>
-              <p className='text-left mt-2'><span className='text-base text-gray-500 mr-3 '>Categories </span>{itemCate}</p>
-              <p className='text-left mt-2'><span className='text-base text-gray-500 mr-3 '>Description </span> {itemDesc}</p>
-               <p className='text-left mt-2'><span className='text-base text-gray-500 mr-3 '>Option </span></p>
-              <select
-                onChange={handleSelect}
-                className="border-2 rounded text-gray-500 p-1 w-sm block selectBox my-2 w-full"
-                defaultValue={selectList[0]}
-              >
-                {selectList.map((item, index) => {
-                  return (
-                    <option key={index} value={item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-              <button
+        <img className="w-1/2" alt={`${itemImg} 이미지`} src={itemImgUrl} />
+        <div className="w-1/2 px-[50px] py-[20px]">
+          <h3 className="text-2xl text-left mb-3">{itemName}</h3>
+          <h5 className="text-2xl text-left text-[#E05879] font-extrabold mb-5">
+            {`${Number(itemPrice).toLocaleString("ko-KR")}`}원
+          </h5>
+          <p className="text-left mt-2">
+            <span className="text-base text-gray-500 mr-3 ">Categories </span>
+            {itemCate}
+          </p>
+          <p className="text-left mt-2">
+            <span className="text-base text-gray-500 mr-3 ">Description </span>{" "}
+            {itemDesc}
+          </p>
+          <p className="text-left mt-2">
+            <span className="text-base text-gray-500 mr-3 ">Option </span>
+          </p>
+          <select
+            onChange={handleSelect}
+            className="border-2 rounded text-gray-500 p-1 w-sm block selectBox my-2 w-full"
+            defaultValue={selectList[0]}
+          >
+            {selectList.map((item, index) => {
+              return (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              );
+            })}
+          </select>
+          <button
             className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded my-[2em] mx-auto flex gap-[12px] item-center"
             type="submit"
           >
-            <AiOutlineShoppingCart className='text-[1.4em]'/>
+            <AiOutlineShoppingCart className="text-[1.4em]" />
             장바구니에 넣기
           </button>
-        </div>     
-      </div> 
->>>>>>> reset2
+        </div>
+      </div>
     </form>
   );
 }
