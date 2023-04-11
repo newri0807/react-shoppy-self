@@ -151,7 +151,9 @@ export default function Detail() {
         <div className="w-1/2 px-[50px] py-[20px]">
           <h3 className="text-2xl text-left mb-3">{itemName}</h3>
           <h5 className="text-2xl text-left text-[#E05879] font-extrabold mb-5">
-            {`${Number(itemPrice).toLocaleString("ko-KR")}`}원
+            {isNaN(itemPrice)
+              ? `${itemPrice}원`
+              : `${Number(itemPrice).toLocaleString("ko-KR")}원`}
           </h5>
           <p className="text-left mt-2">
             <span className="text-base text-gray-500 mr-3 ">Categories </span>

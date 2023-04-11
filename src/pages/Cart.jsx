@@ -134,9 +134,9 @@ export default function Cart() {
                     </button>
                   </div>
                   <span className={`min-w-[150px] each_price`}>
-                    {`${Number(item.itemPrice * item.itemCount).toLocaleString(
-                      "ko-KR"
-                    )}`}
+                    {`${Number(
+                      item.itemPrice.replace(/,/g, "") * item.itemCount
+                    ).toLocaleString("ko-KR")}`}
                     원
                   </span>
                   <button
