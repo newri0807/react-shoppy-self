@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useContext, useState } from "react";
-import { useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDatabase, ref, get, child } from "firebase/database";
 import { addOrUpdateToCart, getCart } from "../api/firebase";
@@ -11,7 +11,6 @@ export default function Detail() {
   const { addTototalCartAmount } = useContext(cartContext);
   //파라미터
   let { id } = useParams();
-  //test
 
   // 셀렉트 옵션 선택
   const [Selected, setSelected] = useState();
@@ -25,6 +24,7 @@ export default function Detail() {
     .then((snapshot) => {
       if (snapshot.exists()) {
         const values = snapshot.val();
+        console.log(values);
         return values;
       } else {
         console.log("No data available");
@@ -36,7 +36,7 @@ export default function Detail() {
 
   // // eslint-disable-next-line react-hooks/rules-of-hooks
   const { status, data, error } = useQuery(
-    ["detail"],
+    ["detail", id],
     () => {
       return fetchTodoList;
     },
