@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDatabase, ref, get, child } from "firebase/database";
@@ -19,38 +19,27 @@ export default function Detail() {
   const loginUserId = JSON.parse(localStorage.getItem("userInfo"));
   //console.log("현재로그인한 사람uid", loginUserId.uid);
 
-  const dbRef = ref(getDatabase());
-  const fetchTodoList = get(child(dbRef, `products/${id}`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        const values = snapshot.val();
-        console.log(values);
-        return values;
-      } else {
-        console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  const [productData, setProductData] = useState(null);
 
-  // // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { status, data, error } = useQuery(
-    ["detail", id],
-    () => {
-      return fetchTodoList;
-    },
-    {
-      staleTime: 1000 * 60 * 5,
-    }
-  );
+  useEffect(() => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `products/${id}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const values = snapshot.val();
+          console.log(values);
+          setProductData(values);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id]);
 
-  if (status === "loading") {
+  if (!productData) {
     return <span>Loading...</span>;
-  }
-
-  if (status === "error") {
-    return <span>Error: {error.message}</span>;
   }
 
   const {
@@ -61,8 +50,7 @@ export default function Detail() {
     itemImgUrl,
     itemCate,
     itemDesc,
-  } = data;
-  console.log(data);
+  } = productData;
 
   const handleSelect = (e) => {
     setSelected(e.target.value);

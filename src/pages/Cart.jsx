@@ -14,6 +14,12 @@ export default function Cart() {
     onSuccess: () => QueryClient.invalidateQueries(["carts"]),
   });
 
+  useEffect(() => {
+    getCart(loginUser.uid).then((res) => {
+      QueryClient.setQueryData("carts", res);
+    });
+  }, [QueryClient, loginUser.uid]);
+
   const { status, data, error } = useQuery(
     ["carts"],
     () => getCart(loginUser.uid),
