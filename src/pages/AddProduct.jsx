@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { getDatabase, set, ref } from "firebase/database";
 import {
   getStorage,
+<<<<<<< HEAD
+=======
+  uploadString,
+>>>>>>> origin/master
   getDownloadURL,
   ref as ref2,
   uploadBytesResumable,
 } from "firebase/storage";
+<<<<<<< HEAD
 import {HiUpload} from 'react-icons/hi';
+=======
+>>>>>>> origin/master
 
 export default function AddProduct() {
   const [values, setValues] = useState({
@@ -27,6 +34,7 @@ export default function AddProduct() {
       console.log(files[0]);
       return;
     }
+<<<<<<< HEAD
     if (name === "itemPrice") {
     const formattedValue = Number(value.replace(/,/g, '')).toLocaleString();
     setValues({
@@ -35,15 +43,22 @@ export default function AddProduct() {
     });
     return;
   }
+=======
+>>>>>>> origin/master
     setValues({
       ...values,
       [name]: value,
     });
   };
 
+<<<<<<< HEAD
   
 
   //이미지 업로드 관련
+=======
+  //이미지 업로드 관련
+
+>>>>>>> origin/master
   const randomId = Math.random().toString(16).substring(2, 8);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,9 +122,15 @@ export default function AddProduct() {
   };
 
   return (
+<<<<<<< HEAD
     <div className=' flex justify-center flex-wrap'>
       {file && <div className="flex w-full h-[400px] justify-center"><img src={URL.createObjectURL(file)} alt="local file img" className='w-[300px]  mt-[20px] mb-[30px] my-auto' /></div> }
       <form onSubmit={handleSubmit} className={`w-[500px] m-auto  ${ file ? ('mt-[0px]'):('mt-[400px]')}`}>
+=======
+    <div>
+      {file && <img src={URL.createObjectURL(file)} alt="local file img" />}
+      <form onSubmit={handleSubmit}>
+>>>>>>> origin/master
         <input
           type="file"
           className="border-2 rounded text-gray-500 p-1 my-2 w-full"
@@ -131,7 +152,11 @@ export default function AddProduct() {
           type="text"
           placeholder="가격"
           className="border-2 rounded text-gray-500 p-1 my-2 w-full"
+<<<<<<< HEAD
           name="itemPrice"          
+=======
+          name="itemPrice"
+>>>>>>> origin/master
           value={values.itemPrice}
           onChange={handleChange}
         />
@@ -161,10 +186,16 @@ export default function AddProduct() {
         />
         <button
           type="submit"
+<<<<<<< HEAD
           className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded mt-8 mx-auto flex justify-center items-center gap-2"
         >
           <HiUpload/>
           상품 등록
+=======
+          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
+        >
+          submit
+>>>>>>> origin/master
         </button>
       </form>
     </div>

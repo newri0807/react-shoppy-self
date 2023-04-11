@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
+<<<<<<< HEAD
 import React, { useContext,  useState } from "react";
 import { useQuery } from "react-query";
 import {  useParams } from "react-router-dom";
@@ -7,6 +8,15 @@ import { addOrUpdateToCart, getCart } from "../api/firebase";
 import { cartContext } from "../context/cart-context";
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
+=======
+import React, { useContext, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDatabase, set, ref, get, child, push } from "firebase/database";
+import { getDownloadURL, getStorage, ref as ref2 } from "firebase/storage";
+import { addOrUpdateToCart, getCart } from "../api/firebase";
+import { cartContext } from "../context/cart-context";
+>>>>>>> origin/master
 
 export default function Detail() {
   const { addTototalCartAmount } = useContext(cartContext);
@@ -54,8 +64,12 @@ export default function Detail() {
     return <span>Error: {error.message}</span>;
   }
 
+<<<<<<< HEAD
   const { itemImg, itemName, itemPrice, itemOption, itemImgUrl, itemCate, itemDesc } = data;
   console.log(data)
+=======
+  const { itemImg, itemName, itemPrice, itemOption, itemImgUrl } = data;
+>>>>>>> origin/master
 
   const handleSelect = (e) => {
     setSelected(e.target.value);
@@ -139,6 +153,7 @@ export default function Detail() {
 
   return (
     <form onSubmit={addCart}>
+<<<<<<< HEAD
       <div className="flex  justify-around">
           <img className='w-1/2' alt={`${itemImg} 이미지`} src={itemImgUrl} />
           <div className='w-1/2 px-[50px] py-[20px]'>
@@ -169,6 +184,30 @@ export default function Detail() {
           </button>
         </div>     
       </div> 
+=======
+      <img alt={`${itemImg} 이미지`} src={itemImgUrl} />
+      <h3> {itemName}</h3>
+      <h5>{itemPrice}원</h5>
+      <select
+        onChange={handleSelect}
+        className="border-2 rounded text-gray-500 p-1 my-2 w-sm block selectBox"
+        defaultValue={selectList[0]}
+      >
+        {selectList.map((item, index) => {
+          return (
+            <option key={index} value={item}>
+              {item}
+            </option>
+          );
+        })}
+      </select>
+      <button
+        className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
+        type="submit"
+      >
+        장바구니에 넣기
+      </button>
+>>>>>>> origin/master
     </form>
   );
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useContext, useEffect, useState } from "react";
+=======
+import React, { useContext } from "react";
+>>>>>>> origin/master
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { cartContext } from "../context/cart-context";
 import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
@@ -6,10 +10,16 @@ import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
 export default function Cart() {
   const { addTototalCartAmount } = useContext(cartContext);
   const loginUser = JSON.parse(localStorage.getItem("userInfo"));
+<<<<<<< HEAD
   const [totalPrice, setTotalPrice] = useState(0);
 
   const QueryClient = useQueryClient();
   
+=======
+  //const [datass, setDatass] = useState();
+
+  const QueryClient = useQueryClient();
+>>>>>>> origin/master
   const mutation = useMutation(() => getCart(loginUser.uid), {
     onSuccess: () => QueryClient.invalidateQueries(["carts"]),
   });
@@ -22,6 +32,7 @@ export default function Cart() {
     }
   );
 
+<<<<<<< HEAD
 
   useEffect(() => {
     const htmlTag = document.querySelectorAll(".each_price");
@@ -33,6 +44,8 @@ export default function Cart() {
   }, [data]);
 
 
+=======
+>>>>>>> origin/master
   if (status === "loading") {
     return <span>Loading...</span>;
   }
@@ -41,6 +54,10 @@ export default function Cart() {
     return <span>Error: {error.message}</span>;
   }
 
+<<<<<<< HEAD
+=======
+  console.log(data, data.length);
+>>>>>>> origin/master
   const reducer = (action, prev) => {
     let changeData = {};
     if (action === "add-count") {
@@ -89,7 +106,10 @@ export default function Cart() {
     addOrUpdateToCart(loginUser.uid, changeData);
   };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
   return (
     <div>
       {data.length === 0 && (
@@ -108,7 +128,11 @@ export default function Cart() {
                     <img
                       src={item.itemImgUrl}
                       alt=""
+<<<<<<< HEAD
                       className={`product_${index} max-h-[300px]`}
+=======
+                      className={`product_${index}`}
+>>>>>>> origin/master
                     />
                   </span>
                   <span className="min-w-[150px]">{item.itemName} </span>
@@ -134,9 +158,13 @@ export default function Cart() {
                       -
                     </button>
                   </div>
+<<<<<<< HEAD
                   <span className={`min-w-[150px] each_price`}>
                     {`${Number(item.itemPrice * item.itemCount).toLocaleString('ko-KR')}`}원
                   </span>
+=======
+
+>>>>>>> origin/master
                   <button
                     className="bg-gray-800 hover:bg-gray-800 text-white font-bold
                 px-2 py-1  min-w-[27px] "
@@ -158,6 +186,7 @@ export default function Cart() {
                 </li>
               );
             })}
+<<<<<<< HEAD
             <table className="table-fixed w-full my-14 border text-center  font-light dark:border-neutral-500">
               <thead className="border-b font-medium dark:border-neutral-500" >
                 <tr className='border-separate border-neutral-700 bg-neutral-800 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700'>
@@ -174,6 +203,8 @@ export default function Cart() {
                 </tr>                
               </tbody>
             </table>
+=======
+>>>>>>> origin/master
         </ul>
       )}
     </div>

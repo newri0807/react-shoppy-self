@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import { getDatabase, ref, child, get, orderByChild } from "firebase/database";
 import { useQuery } from "react-query";
 import { useNavigate } from 'react-router-dom';
@@ -68,4 +69,9 @@ export default function Product() {
         })}
     </ul>
   );
+=======
+
+export default function Product() {
+  return <div>Product</div>;
+>>>>>>> origin/master
 }

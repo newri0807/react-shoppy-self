@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import logo from "./logo.svg";
+>>>>>>> origin/master
 import "./App.css";
 import { CartProvider } from "./context/cart-context";
 import Nav from "./components/Nav";

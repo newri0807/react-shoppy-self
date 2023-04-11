@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { cartContext } from "../context/cart-context";
 import { auth, getCart, handleGoogleLogin } from "../api/firebase";
+<<<<<<< HEAD
 import { BsCart } from "react-icons/bs";
 import { TfiWrite } from "react-icons/tfi";
 
@@ -13,22 +14,59 @@ export default function Nav() {
   const adminUid = process.env.REACT_APP_ADMIN_UID;
   const Navigate = useNavigate();
 
+=======
+
+export default function Nav(props) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { totalCartAmount, addTototalCartAmount } = useContext(cartContext);
+
+  const localStorageYn = JSON.parse(localStorage.getItem("userInfo"));
+  const [userData, setUserData] = useState(localStorageYn);
+  const adminUid = process.env.REACT_APP_ADMIN_UID;
+
+  // 페이지 이동
+  const Navigate = useNavigate();
+
+  // function handleGoogleLogin() {
+  //   const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+  //   signInWithPopup(auth, provider) // popup을 이용한 signup
+  //     .then((data) => {
+  //       localStorage.setItem("userInfo", JSON.stringify(data.user)); // user data 설정
+  //       setUserData(JSON.parse(localStorage.getItem("userInfo")));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+>>>>>>> origin/master
 
   const handleLogin = () => {
     handleGoogleLogin().then((res) => {
       localStorage.setItem("userInfo", JSON.stringify(res));
+<<<<<<< HEAD
       setUserData(res);
+=======
+      setUserData(localStorageYn);
+>>>>>>> origin/master
     });
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     if (userData !== null) {
       getCart(userData.uid).then((res) => {
+=======
+    if (userData !== undefined) {
+      console.log(userData.uid);
+      getCart(userData.uid).then((res) => {
+        console.log(res);
+>>>>>>> origin/master
         addTototalCartAmount(res.length);
       });
     }
   }, [addTototalCartAmount, userData]);
 
+<<<<<<< HEAD
     useEffect(() => {
     const localStorageYn = JSON.parse(localStorage.getItem("userInfo"));
     if (localStorageYn) {
@@ -36,12 +74,18 @@ export default function Nav() {
     }
   }, []);
 
+=======
+>>>>>>> origin/master
   const onLogOutClick = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         localStorage.removeItem("userInfo");
+<<<<<<< HEAD
         setUserData(null);
+=======
+        setUserData("");
+>>>>>>> origin/master
         addTototalCartAmount(0);
         alert("로그아웃 되었습니다");
         Navigate("/");
@@ -56,17 +100,25 @@ export default function Nav() {
     Navigate(`/addProduct`);
   };
 
+<<<<<<< HEAD
  
   return (
     <div className="flex items-center justify-between py-5 border-b-2 border-rose-300">
       <h1>
         <Link to="/" className='text-4xl font-extrabold text-[#e2559c] '>SHOPPY</Link>
+=======
+  return (
+    <div className="flex items-center justify-between py-5 border-b-2 border-rose-300">
+      <h1>
+        <Link to="/">logo </Link>
+>>>>>>> origin/master
       </h1>
       <ul className="flex justify-between gap-3 items-center">
         <li>
           <Link to="/product">Product </Link>
         </li>
         {userData ? (
+<<<<<<< HEAD
           <li>
           <ul className="flex justify-between items-center gap-3">
             <span onClick={onLogOutClick} className="cursor-pointer">
@@ -106,6 +158,39 @@ export default function Nav() {
           </li> 
         </ul>
         </li>
+=======
+          <li className="flex justify-between items-center gap-2">
+            <span onClick={onLogOutClick} className="cursor-pointer">
+              logout
+            </span>
+
+            {userData.uid === adminUid ? (
+              <>
+                <span onClick={gotoPage} className="cursor-pointer">
+                  상품등록
+                </span>
+                <span className="cursor-pointer">
+                  <Link to="/cart">
+                    카트 {totalCartAmount === 0 ? null : totalCartAmount}
+                  </Link>
+                </span>
+              </>
+            ) : (
+              <span className="cursor-pointer">
+                <Link to="/cart">
+                  카트 {totalCartAmount === 0 ? null : totalCartAmount}
+                </Link>
+              </span>
+            )}
+
+            <img
+              src={userData.photoURL}
+              alt="userPic"
+              className="rounded-full ring-2 ring-white mx-2 max-w-[2rem]"
+            />
+            <span>{userData.displayName}</span>
+          </li>
+>>>>>>> origin/master
         ) : (
           <li onClick={handleLogin} className="cursor-pointer">
             login

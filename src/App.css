@@ -36,7 +36,10 @@
     transform: rotate(360deg);
   }
 }
+<<<<<<< HEAD
 
 .animate-float:hover{
   transform: translateY(-5px)
 }
+=======
+>>>>>>> origin/master
