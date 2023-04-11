@@ -1,5 +1,5 @@
 import React from "react";
-import { getDatabase, ref, child, get, orderByChild } from "firebase/database";
+import { getDatabase, ref, child, get } from "firebase/database";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
