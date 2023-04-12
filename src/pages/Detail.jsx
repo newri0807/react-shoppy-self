@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useContext, useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDatabase, ref, get, child } from "firebase/database";
 import { addOrUpdateToCart, getCart } from "../api/firebase";
@@ -21,6 +20,7 @@ export default function Detail() {
 
   const [productData, setProductData] = useState(null);
 
+  // 상품 정보 가져오기
   useEffect(() => {
     const dbRef = ref(getDatabase());
     get(child(dbRef, `products/${id}`))

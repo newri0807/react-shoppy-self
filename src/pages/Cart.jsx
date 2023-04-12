@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { cartContext } from "../context/cart-context";
 import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
 
@@ -8,15 +8,39 @@ export default function Cart() {
   const loginUser = JSON.parse(localStorage.getItem("userInfo"));
   const [totalPrice, setTotalPrice] = useState(0);
 
+  // React Query 클라이언트 인스턴스 생성
   const QueryClient = useQueryClient();
 
-  const mutation = useMutation(() => getCart(loginUser.uid), {
-    onSuccess: () => QueryClient.invalidateQueries(["carts"]),
-  });
+  // 작성법 1. -- useMutation() && useQueryClient() 사용
+  // const mutation = useMutation(() => getCart(loginUser.uid), {
+  //   onSuccess: () => {
+  //     QueryClient.invalidateQueries(["carts"]);
+  //     getCart(loginUser.uid).then((res) => {
+  //       QueryClient.setQueryData("carts", res);
+  //       setTotalPrice(calculateTotalPrice(res));
+  //        addTototalCartAmount(res.length);
+  //     });
+  //   },
+  // });
 
+  // 장바구니에 있는 상품의 총 가격을 구하는 함수
+  const calculateTotalPrice = (res) => {
+    let totalPrices = 0;
+    for (let i = 0; i < res.length; i++) {
+      totalPrices += Number(
+        res[i].itemPrice.replace(/,/g, "") * res[i].itemCount
+      );
+    }
+    console.log(totalPrices);
+    return totalPrices;
+  };
+
+  // 작성법 2. -- useQueryClient() 사용
   useEffect(() => {
     getCart(loginUser.uid).then((res) => {
+      //cache를 업데이트 하기 위해 setQueryData를 사용
       QueryClient.setQueryData("carts", res);
+      setTotalPrice(calculateTotalPrice(res));
     });
   }, [QueryClient, loginUser.uid]);
 
@@ -25,19 +49,9 @@ export default function Cart() {
     () => getCart(loginUser.uid),
     {
       staleTime: 1000 * 60 * 5,
+      onSuccess: (res) => setTotalPrice(calculateTotalPrice(res)),
     }
   );
-
-  useEffect(() => {
-    const htmlTag = document.querySelectorAll(".each_price");
-    let totalPrices = 0;
-    for (var i = 0; i < htmlTag.length; i++) {
-      totalPrices += Number(
-        htmlTag[i].innerHTML.split("원")[0].replace(/,/g, "")
-      );
-    }
-    setTotalPrice(totalPrices);
-  }, [data]);
 
   if (status === "loading") {
     return <span>Loading...</span>;
@@ -47,53 +61,56 @@ export default function Cart() {
     return <span>Error: {error.message}</span>;
   }
 
+  // 버튼 클릭시 상품의 개수를 변경하는 함수
   const reducer = (action, prev) => {
     let changeData = {};
-    if (action === "add-count") {
-      data
-        .filter(
-          (data) =>
-            data.itemOption === prev.itemOption && data.itemId === prev.itemId
-        )
-        .map((prev) => {
-          return (changeData = {
-            ...prev,
-            itemCount: prev.itemCount + 1,
-          });
-        });
-    } else {
-      data
-        .filter(
-          (data) =>
-            data.itemOption === prev.itemOption && data.itemId === prev.itemId
-        )
-        .map((prev) => {
-          if (prev.itemCount === 1) {
-            return removeFromCart(loginUser.uid, prev.itemId, prev.itemOption);
-          } else {
-            return (changeData = {
-              ...prev,
-              itemCount: prev.itemCount - 1,
-            });
-          }
-        });
-    }
-    //console.log(changeData);
-
-    mutation.mutate(
-      {},
-      {
-        onSuccess: () => {
-          getCart(loginUser.uid).then((res) => {
-            console.log(res.length);
-            addTototalCartAmount(res.length);
-          });
-        },
-      }
+    const itemToUpdate = data.find(
+      (data) =>
+        data.itemOption === prev.itemOption && data.itemId === prev.itemId
     );
 
+    if (!itemToUpdate) {
+      return;
+    }
+
+    console.log("itemToUpdate", action);
+    if (action === "add-count") {
+      changeData = {
+        ...itemToUpdate,
+        itemCount: itemToUpdate.itemCount + 1,
+      };
+    } else {
+      if (itemToUpdate.itemCount === 1) {
+        removeFromCart(
+          loginUser.uid,
+          itemToUpdate.itemId,
+          itemToUpdate.itemOption
+        );
+        totalCartCountFunc();
+      } else {
+        changeData = {
+          ...itemToUpdate,
+          itemCount: itemToUpdate.itemCount - 1,
+        };
+      }
+    }
+
     addOrUpdateToCart(loginUser.uid, changeData);
+
+    // 작성법 1. -- mutation 사용
+    // mutation.mutate();
+
+    // 작성법 2. -- useQueryClient 사용
+    // cache를 무효화하고 다시 쿼리를 실행
+    QueryClient.invalidateQueries(["carts"]);
   };
+
+  // 장바구니에 있는 상품의 총 개수를 구하는 함수
+  function totalCartCountFunc() {
+    getCart(loginUser.uid).then((res) => {
+      addTototalCartAmount(res.length);
+    });
+  }
 
   return (
     <div>
@@ -106,7 +123,7 @@ export default function Cart() {
             data.map((item, index) => {
               return (
                 <li
-                  key={item.itemId}
+                  key={index}
                   className="flex items-center justify-between my-2"
                 >
                   <span className="min-w-[150px]">
@@ -154,11 +171,9 @@ export default function Cart() {
                         item.itemId,
                         item.itemOption
                       );
-                      mutation.mutate();
-                      getCart(loginUser.uid).then((res) => {
-                        //console.log(res.length);
-                        addTototalCartAmount(res.length);
-                      });
+                      QueryClient.invalidateQueries(["carts"]);
+                      //mutation.mutate();
+                      totalCartCountFunc();
                     }}
                   >
                     x
@@ -194,6 +209,14 @@ export default function Cart() {
               </tr>
             </tbody>
           </table>
+          <button
+            className="w-full bg-[#EC4899] hover:bg-[#cc126f] text-white font-bold py-2 px-4"
+            onClick={() => {
+              alert("결제기능은 준비중 입니다😁");
+            }}
+          >
+            CHECKOUT
+          </button>
         </ul>
       )}
     </div>
