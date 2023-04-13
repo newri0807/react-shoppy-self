@@ -24,6 +24,7 @@ const db = getFirestore(app);
 const database = getDatabase();
 export { app, auth, db };
 
+// 📌 handleGoogleLogin 메소드는 구글 OAuth 인증을 사용하여 Firebase Authentication에 로그인하는 메소드
 export async function handleGoogleLogin() {
   const provider = new GoogleAuthProvider(); // provider를 구글로 설정
   return signInWithPopup(auth, provider) // popup을 이용한 signup
@@ -57,3 +58,8 @@ export async function addOrUpdateToCart(userId, product) {
 export async function removeFromCart(userId, itemId, itemOption) {
   return remove(ref(database, `carts/${userId}/${itemId}_${itemOption}`));
 }
+
+// 📌 onAuthStateChanged 메소드는 로그인 상태가 변경될 때마다 실행되는 콜백 함수를 등록하는 메소드
+export const onAuthStateChanged = (callback) => {
+  return auth.onAuthStateChanged(callback);
+};

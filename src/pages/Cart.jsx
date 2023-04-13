@@ -4,8 +4,8 @@ import { cartContext } from "../context/cart-context";
 import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
 
 export default function Cart() {
-  const { addTototalCartAmount } = useContext(cartContext);
-  const loginUser = JSON.parse(localStorage.getItem("userInfo"));
+  const { addTototalCartAmount, user } = useContext(cartContext);
+  const loginUser = user;
   const [totalPrice, setTotalPrice] = useState(0);
 
   // React Query 클라이언트 인스턴스 생성
@@ -36,16 +36,18 @@ export default function Cart() {
   };
 
   // 작성법 2. -- useQueryClient() 사용
-  useEffect(() => {
-    getCart(loginUser.uid).then((res) => {
-      //cache를 업데이트 하기 위해 setQueryData를 사용
-      QueryClient.setQueryData("carts", res);
-      setTotalPrice(calculateTotalPrice(res));
-    });
-  }, [QueryClient, loginUser.uid]);
+  // useEffect(() => {
+  //   console.log(user);
+  //   getCart(loginUser.uid).then((res) => {
+  //     //cache를 업데이트 하기 위해 setQueryData를 사용
+  //     QueryClient.setQueryData("carts", res);
+  //     setTotalPrice(calculateTotalPrice(res));
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [QueryClient]);
 
   const { status, data, error } = useQuery(
-    ["carts"],
+    ["carts", loginUser.uid],
     () => getCart(loginUser.uid),
     {
       staleTime: 1000 * 60 * 5,

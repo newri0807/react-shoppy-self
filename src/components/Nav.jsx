@@ -7,14 +7,16 @@ import { BsCart } from "react-icons/bs";
 import { TfiWrite } from "react-icons/tfi";
 
 export default function Nav() {
-  const { totalCartAmount, addTototalCartAmount } = useContext(cartContext);
-  const [userData, setUserData] = useState(null);
+  const { totalCartAmount, addTototalCartAmount, user } =
+    useContext(cartContext);
+  const [userData, setUserData] = useState(user);
   const adminUid = process.env.REACT_APP_ADMIN_UID;
   const Navigate = useNavigate();
 
   const handleLogin = () => {
     handleGoogleLogin().then((res) => {
-      localStorage.setItem("userInfo", JSON.stringify(res));
+      //로그인 작성법 1. localStorage에 저장
+      //localStorage.setItem("userInfo", JSON.stringify(res));
       setUserData(res);
     });
   };
@@ -27,18 +29,38 @@ export default function Nav() {
     }
   }, [addTototalCartAmount, userData]);
 
+  //로그인 테스팅
   useEffect(() => {
-    const localStorageYn = JSON.parse(localStorage.getItem("userInfo"));
-    if (localStorageYn) {
-      setUserData(localStorageYn);
-    }
-  }, []);
+    setUserData(user);
+    console.log("로그인확인중", userData);
+  }, [user, userData]);
+
+  //로그인 작성법 1. localStorage에 저장
+  // useEffect(() => {
+  //   const localStorageYn = JSON.parse(localStorage.getItem("userInfo"));
+  //   if (localStorageYn) {
+  //     setUserData(localStorageYn);
+  //   }
+  // }, []);
+
+  //로그인 작성법 2. onAuthStateChanged() 메소드 이용
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged((user) => {
+  //     setUserData(user);
+  //   });
+
+  //   console.log("onAuthStateChanged", userData);
+  //   return () => unsubscribe();
+  // }, [userData]);
 
   const onLogOutClick = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        localStorage.removeItem("userInfo");
+
+        //로그인 작성법 1. localStorage에 저장
+        //localStorage.removeItem("userInfo");
+
         setUserData(null);
         addTototalCartAmount(0);
         alert("로그아웃 되었습니다");

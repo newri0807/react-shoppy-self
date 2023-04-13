@@ -1,24 +1,37 @@
 import { createContext, useEffect, useState } from "react";
-import { getCart } from "../api/firebase";
+import { getCart, onAuthStateChanged } from "../api/firebase";
 
 export const cartContext = createContext();
 
 export function CartProvider({ children }) {
   const [totalCartAmount, setTotalCartAmount] = useState(0);
   const addTototalCartAmount = (item) => setTotalCartAmount(item);
-  const loginUserId = JSON.parse(localStorage.getItem("userInfo"));
+  //로그인 작성법 1. localStorage에 저장
+  //const loginUserId = JSON.parse(localStorage.getItem("userInfo"));
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
-    if (loginUserId === null || loginUserId === undefined) {
+    const unsubscribe = onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    if (user === null || user === undefined) {
       setTotalCartAmount(0);
     } else {
-      getCart(loginUserId.uid).then((res) => {
+      getCart(user.uid).then((res) => {
         //console.log(res.length);
         setTotalCartAmount(res.length);
       });
     }
-  }, [loginUserId, totalCartAmount]);
+  }, [user, totalCartAmount]);
+
   return (
-    <cartContext.Provider value={{ totalCartAmount, addTototalCartAmount }}>
+    <cartContext.Provider
+      value={{ totalCartAmount, addTototalCartAmount, user }}
+    >
       {children}
     </cartContext.Provider>
   );

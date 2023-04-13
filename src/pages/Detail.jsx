@@ -7,7 +7,7 @@ import { cartContext } from "../context/cart-context";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 export default function Detail() {
-  const { addTototalCartAmount } = useContext(cartContext);
+  const { addTototalCartAmount, user } = useContext(cartContext);
   //파라미터
   let { id } = useParams();
 
@@ -15,7 +15,7 @@ export default function Detail() {
   const [Selected, setSelected] = useState();
 
   //현재로그인한 user 정보
-  const loginUserId = JSON.parse(localStorage.getItem("userInfo"));
+  const loginUserId = user;
   //console.log("현재로그인한 사람uid", loginUserId.uid);
 
   const [productData, setProductData] = useState(null);
@@ -64,6 +64,10 @@ export default function Detail() {
   function addCart(e) {
     e.preventDefault();
 
+    if (!user) {
+      alert("로그인이 필요한 서비스입니다.");
+      return;
+    }
     let find;
 
     let selected = `${Selected}`;
