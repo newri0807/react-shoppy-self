@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { cartContext } from "../context/cart-context";
 import { addOrUpdateToCart, getCart, removeFromCart } from "../api/firebase";
